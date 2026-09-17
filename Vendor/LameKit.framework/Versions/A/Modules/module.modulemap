@@ -1,0 +1,4 @@
+framework module LameKit {
+    header "lame.h"
+    export *
+}

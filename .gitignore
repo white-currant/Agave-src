@@ -1,0 +1,7 @@
+# Сборка и кэш Xcode
+build/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+xcuserdata/
+.DS_Store

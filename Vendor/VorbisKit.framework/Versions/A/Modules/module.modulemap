@@ -1,0 +1,4 @@
+framework module VorbisKit {
+    umbrella header "VorbisKit.h"
+    export *
+}

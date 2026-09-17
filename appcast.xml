@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+    <channel>
+        <title>Agave</title>
+        <link>https://raw.githubusercontent.com/white-currant/Agave/main/appcast.xml</link>
+        <description>Обновления Agave</description>
+        <language>ru</language>
+        <!-- Пункты релизов добавляются сюда скриптом Scripts/release.sh -->
+    </channel>
+</rss>
