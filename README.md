@@ -158,7 +158,7 @@ ad-hoc (`CODE_SIGN_IDENTITY = "-"`) Team ID отсутствует у всех �
    Manage Certificates → "+"). Team ID `388FG4KTF8`.
 2. Профиль нотаризации:
    ```bash
-   xcrun notarytool store-credentials "notarytool-profile" \
+   xcrun notarytool store-credentials "yuliontool" \
      --apple-id <apple-id> --team-id 388FG4KTF8 --password <app-specific-password>
    ```
 
@@ -191,7 +191,7 @@ Scripts/release.sh
 
 - [x] Team ID `388FG4KTF8`
 - [ ] Сертификат Developer ID Application создан и виден в `security find-identity`
-- [ ] Профиль `notarytool-profile` сохранён
+- [ ] Профиль `yuliontool` сохранён
 - [ ] Экран «О программе» с упоминанием LAME и Xiph.Org
 - [ ] `create-dmg` установлен (`brew install create-dmg`)
 - [ ] `Scripts/release.sh` прогнан хотя бы раз локально до первого `gh release create`

@@ -4,7 +4,7 @@
 #
 # Разовая подготовка (см. README → «Обновления»):
 #   1. Сертификат "Developer ID Application" в Xcode (Settings → Accounts → Manage Certificates).
-#   2. xcrun notarytool store-credentials "notarytool-profile" --apple-id <email> --team-id 388FG4KTF8 --password <app-specific-password>
+#   2. xcrun notarytool store-credentials "yuliontool" --apple-id <email> --team-id 388FG4KTF8 --password <app-specific-password>
 #
 # Запуск: Scripts/release.sh
 
@@ -14,7 +14,7 @@ cd "$(dirname "$0")/.."
 APP_NAME="Agave"
 SCHEME="Agave"
 GITHUB_REPO="white-currant/Agave"
-NOTARY_PROFILE="notarytool-profile"
+NOTARY_PROFILE="yuliontool"
 SPARKLE_ACCOUNT="agave"
 
 BUILD_DIR="build/release"
