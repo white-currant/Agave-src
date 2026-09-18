@@ -108,7 +108,7 @@ if [ ! -f "$DMG_PATH" ]; then
     exit 1
 fi
 
-spctl -a -vv --type open "$DMG_PATH"
+xcrun stapler validate "$DMG_PATH"
 
 LENGTH=$(stat -f%z "$ZIP_PATH")
 
