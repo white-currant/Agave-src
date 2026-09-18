@@ -171,9 +171,17 @@ Scripts/release.sh
 
 Скрипт архивирует, экспортирует под Developer ID, нотаризует, степлит тикет,
 подписывает zip EdDSA-ключом Sparkle (`Scripts/sparkle-bin/sign_update`,
-ключ — отдельный на аккаунт `agave` в Keychain) и печатает готовый `<item>`
-для `appcast.xml`. Дальше руками: `gh release create` с этим zip и вставка
-`<item>` в `appcast.xml` с пушем.
+ключ — отдельный на аккаунт `agave` в Keychain) и дополнительно собирает DMG
+(`create-dmg`, `brew install create-dmg`) — отдельно нотаризованный и
+застеплённый, с обычным окном «перетащи в Programs». Печатает готовый `<item>`
+для `appcast.xml`. Два файла с разным назначением:
+
+- **zip** — то, что качает и ставит сам Sparkle при автообновлении;
+- **dmg** — то, что скачивает человек с страницы релиза при первом знакомстве.
+
+Дальше руками: `gh release create` с обоими файлами и вставка `<item>`
+в `appcast.xml` с пушем (в `<item>` попадает только zip — DMG в фид Sparkle
+не участвует).
 
 Приватный EdDSA-ключ живёт только в Keychain этой машины — при переезде на
 другую машину его нужно экспортировать (`Scripts/sparkle-bin/generate_keys -x`,
@@ -185,4 +193,5 @@ Scripts/release.sh
 - [ ] Сертификат Developer ID Application создан и виден в `security find-identity`
 - [ ] Профиль `notarytool-profile` сохранён
 - [ ] Экран «О программе» с упоминанием LAME и Xiph.Org
+- [ ] `create-dmg` установлен (`brew install create-dmg`)
 - [ ] `Scripts/release.sh` прогнан хотя бы раз локально до первого `gh release create`

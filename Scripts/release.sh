@@ -78,13 +78,37 @@ xcrun notarytool submit "$ZIP_PATH" --keychain-profile "$NOTARY_PROFILE" --wait
 echo "==> Степлинг тикета нотаризации в .app"
 xcrun stapler staple "$APP_PATH"
 
-echo "==> Пересборка финального zip со степлером"
+echo "==> Пересборка финального zip со степлером (для Sparkle)"
 rm -f "$ZIP_PATH"
 ditto -c -k --keepParent "$APP_PATH" "$ZIP_PATH"
 
 echo "==> Проверка подписи"
 codesign --verify --deep --strict "$APP_PATH"
 spctl -a -vv "$APP_PATH"
+
+DMG_NAME="$APP_NAME-$VERSION.dmg"
+DMG_PATH="$BUILD_DIR/$DMG_NAME"
+
+echo "==> Сборка DMG (для первого скачивания) + нотаризация + степлинг"
+# create-dmg возвращает ненулевой код даже при успешной сборке (баг работы с Finder),
+# поэтому проверяем результат по наличию файла, а не по коду выхода.
+create-dmg \
+    --volname "$APP_NAME" \
+    --window-size 600 400 \
+    --icon-size 100 \
+    --icon "$APP_NAME.app" 150 200 \
+    --app-drop-link 450 200 \
+    --hide-extension "$APP_NAME.app" \
+    --notarize "$NOTARY_PROFILE" \
+    "$DMG_PATH" \
+    "$APP_PATH" || true
+
+if [ ! -f "$DMG_PATH" ]; then
+    echo "create-dmg не создал файл" >&2
+    exit 1
+fi
+
+spctl -a -vv --type open "$DMG_PATH"
 
 LENGTH=$(stat -f%z "$ZIP_PATH")
 
@@ -96,10 +120,12 @@ PUB_DATE=$(LC_TIME=en_US.UTF-8 date -u "+%a, %d %b %Y %H:%M:%S +0000")
 
 cat <<ITEM
 
-==> Готово: $ZIP_PATH
+==> Готово:
+    $ZIP_PATH  (для Sparkle-обновлений)
+    $DMG_PATH  (для первого скачивания с релиза)
 
 Дальше руками:
-  1. gh release create v$VERSION "$ZIP_PATH" --repo "$GITHUB_REPO" --title "v$VERSION" --notes "..."
+  1. gh release create v$VERSION "$ZIP_PATH" "$DMG_PATH" --repo "$GITHUB_REPO" --title "v$VERSION" --notes "..."
   2. Вставить этот <item> в appcast.xml (в начало списка) и запушить:
 
         <item>
