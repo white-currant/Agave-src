@@ -86,7 +86,7 @@ echo "==> Проверка подписи"
 codesign --verify --deep --strict "$APP_PATH"
 spctl -a -vv "$APP_PATH"
 
-DMG_NAME="$APP_NAME-$VERSION.dmg"
+DMG_NAME="$APP_NAME.dmg"
 DMG_PATH="$BUILD_DIR/$DMG_NAME"
 
 echo "==> Сборка DMG (для первого скачивания) + нотаризация + степлинг"
