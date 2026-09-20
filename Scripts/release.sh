@@ -118,16 +118,8 @@ ED_SIG=$(echo "$SIGNATURE" | sed -n 's/.*sparkle:edSignature="\([^"]*\)".*/\1/p'
 
 PUB_DATE=$(LC_TIME=en_US.UTF-8 date -u "+%a, %d %b %Y %H:%M:%S +0000")
 
-cat <<ITEM
-
-==> Готово:
-    $ZIP_PATH  (для Sparkle-обновлений)
-    $DMG_PATH  (для первого скачивания с релиза)
-
-Дальше руками:
-  1. gh release create v$VERSION "$ZIP_PATH" "$DMG_PATH" --repo "$GITHUB_REPO" --title "v$VERSION" --notes "..."
-  2. Вставить этот <item> в appcast.xml (в начало списка) и запушить:
-
+ITEM_FILE="$BUILD_DIR/appcast-item.xml"
+cat > "$ITEM_FILE" <<ITEM2
         <item>
             <title>Версия $VERSION</title>
             <pubDate>$PUB_DATE</pubDate>
@@ -140,4 +132,16 @@ cat <<ITEM
                 type="application/octet-stream"
                 sparkle:edSignature="$ED_SIG" />
         </item>
-ITEM
+ITEM2
+
+cat <<DONE
+
+==> Готово:
+    $ZIP_PATH  (для Sparkle-обновлений)
+    $DMG_PATH  (для первого скачивания)
+    $ITEM_FILE  (пункт для appcast.xml)
+
+Дальше одной командой (релиз на GitHub + пункт в ленту публичного репозитория $GITHUB_REPO):
+
+    Scripts/publish-release.sh "описание релиза"
+DONE
