@@ -10,6 +10,29 @@
 
 ---
 
+## Установка
+
+**Вручную.** Скачайте `Agave.dmg` со страницы [Releases](https://github.com/white-currant/Agave/releases/latest), откройте и перетащите Agave в «Программы».
+
+**Через терминал, одной командой** (ничего больше не нужно):
+
+```bash
+curl -fsSL -o /tmp/Agave.dmg https://github.com/white-currant/Agave/releases/latest/download/Agave.dmg \
+  && hdiutil attach -nobrowse -quiet -mountpoint /tmp/Agave-dmg /tmp/Agave.dmg \
+  && rm -rf /Applications/Agave.app && cp -R /tmp/Agave-dmg/Agave.app /Applications/ ; \
+hdiutil detach -quiet /tmp/Agave-dmg; rm -f /tmp/Agave.dmg
+```
+
+Запуск: `open -a Agave`. Удаление: `rm -rf /Applications/Agave.app`.
+
+**Через витрину [Currant](https://github.com/white-currant/Currant)** — каталог приложений white-currant: скачивание и обновление в один клик.
+
+Обновления приходят автоматически ([Sparkle](https://sparkle-project.org)); вручную — меню «Проверить обновления…».
+
+Сборка из исходников описана ниже, в разделе «Сборка».
+
+---
+
 ## Форматы
 
 | Формат | Чтение | Запись | Чем реализовано |
@@ -190,8 +213,8 @@ Scripts/release.sh
 ## Что нужно перед публикацией первого релиза
 
 - [x] Team ID `388FG4KTF8`
-- [ ] Сертификат Developer ID Application создан и виден в `security find-identity`
-- [ ] Профиль `yuliontool` сохранён
-- [ ] Экран «О программе» с упоминанием LAME и Xiph.Org
-- [ ] `create-dmg` установлен (`brew install create-dmg`)
+- [x] Сертификат Developer ID Application создан и виден в `security find-identity`
+- [x] Профиль `yuliontool` сохранён
+- [x] Экран «О программе» с упоминанием LAME и Xiph.Org (`Agave/Credits.rtf`)
+- [x] `create-dmg` установлен (`brew install create-dmg`)
 - [ ] `Scripts/release.sh` прогнан хотя бы раз локально до первого `gh release create`

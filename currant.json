@@ -1,0 +1,24 @@
+{
+  "name": "Agave",
+  "tagline": "Пакетный конвертер звука для музыки и подкастов",
+  "description": [
+    "Перетащили файлы или папку, выбрали формат, нажали «Конвертировать». Agave быстро и аккуратно готовит звук для музыкальных проектов, подкастов и игр.",
+    "Пишет MP3, AAC, Ogg Vorbis, ALAC, FLAC, WAV и AIFF; читает всё, что знает CoreAudio, плюс Ogg Vorbis. Форматы без потерь возвращаются побитно — это проверяют автотесты движка.",
+    "Нативный SwiftUI, универсальный бинарник для Apple Silicon и Intel."
+  ],
+  "features": [
+    "MP3, AAC, Ogg Vorbis, ALAC, FLAC, WAV, AIFF",
+    "Постоянный и переменный битрейт; разрядность 16 и 24 бита, у WAV ещё 32-бит float",
+    "Пакетная конвертация файлов и целых папок",
+    "Теги и кириллица в ID3 сохраняются",
+    "Apple Silicon и Intel"
+  ],
+  "bundleID": "com.yulion.agave",
+  "appFile": "Agave.app",
+  "dmgAsset": "Agave.dmg",
+  "category": "Музыка и звук",
+  "minOS": "macOS 14",
+  "accent": "D9784E",
+  "icon": "currant/icon.png",
+  "screenshots": []
+}
