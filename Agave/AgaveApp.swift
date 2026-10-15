@@ -11,7 +11,7 @@ struct AgaveApp: App {
         WindowGroup {
             ContentView()
                 .environment(model)
-                .frame(minWidth: 660, minHeight: 480)
+                .frame(minWidth: 720, minHeight: 560)
         }
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentMinSize)

@@ -117,8 +117,9 @@ struct AgaveMascot: View {
     private let rosetteOrigin = CGPoint(x: 0.5, y: 0.635)
 
     var body: some View {
-        TimelineView(.animation(minimumInterval: 1.0 / 30.0)) { timeline in
-            let time = timeline.date.timeIntervalSinceReferenceDate
+        let time = AnimationClock.shared.time
+        // Время берём у общих часов: они тикают и при открытом меню.
+        Group {
             let breath = sin(time * breathSpeed)
 
             // За работой горшок подпрыгивает в такт — движение вверх короткое

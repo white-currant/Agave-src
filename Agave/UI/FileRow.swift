@@ -28,10 +28,13 @@ struct FileRow: View {
             trailing
                 .frame(width: 44, alignment: .trailing)
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 12)
         .frame(height: Theme.rowHeight)
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(isHovering ? Theme.panelStrong : Theme.panel)
+        )
         .contentShape(Rectangle())
-        .background(isHovering ? Color.primary.opacity(0.04) : .clear)
         .onHover { isHovering = $0 }
         .help(item.errorText ?? item.sourceURL.path(percentEncoded: false))
         .onTapGesture(count: 2) { reveal() }
@@ -63,7 +66,8 @@ struct FileRow: View {
 
     private var detailColor: Color {
         switch item.status {
-        case .failed: return .orange
+        case .failed: return Theme.warning
+        case .done: return Theme.highlight
         default: return .secondary
         }
     }
@@ -116,16 +120,16 @@ struct StatusBadge: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(tint.opacity(0.12))
-                .frame(width: 28, height: 28)
+                .fill(tint.opacity(0.16))
+                .frame(width: 30, height: 30)
 
             switch status {
             case .running:
                 Circle()
                     .trim(from: 0, to: max(0.03, progress))
-                    .stroke(tint, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                    .stroke(tint, style: StrokeStyle(lineWidth: 2.5, lineCap: .round))
                     .rotationEffect(.degrees(-90))
-                    .frame(width: 22, height: 22)
+                    .frame(width: 23, height: 23)
                     .animation(.linear(duration: 0.15), value: progress)
             default:
                 Image(systemName: symbol)
@@ -148,9 +152,9 @@ struct StatusBadge: View {
 
     private var tint: Color {
         switch status {
-        case .done: return .green
-        case .failed: return .orange
-        case .running: return Theme.accent
+        case .done: return Theme.highlight
+        case .failed: return Theme.warning
+        case .running: return Theme.sun
         default: return .secondary
         }
     }

@@ -6,14 +6,11 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            VisualEffectBackground()
-                .ignoresSafeArea()
+            Backdrop()
 
             VStack(spacing: 0) {
                 header
-                Divider().opacity(0.6)
                 queue
-                Divider().opacity(0.6)
                 BottomBar()
             }
         }
@@ -27,8 +24,8 @@ struct ContentView: View {
         .overlay {
             if isTargeted {
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .strokeBorder(Theme.accent, lineWidth: 3)
-                    .background(Theme.accent.opacity(0.06))
+                    .strokeBorder(Theme.highlight, lineWidth: 3)
+                    .background(Theme.highlight.opacity(0.06))
                     .ignoresSafeArea()
                     .allowsHitTesting(false)
                     .transition(.opacity)
@@ -42,8 +39,13 @@ struct ContentView: View {
     private var header: some View {
         HStack(spacing: 10) {
             VStack(alignment: .leading, spacing: 1) {
-                Text("Agave")
-                    .font(.system(size: 15, weight: .semibold))
+                HStack(spacing: 5) {
+                    Text("Agave")
+                        .font(.system(size: 15, weight: .semibold))
+                    Text("Audio")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(Theme.highlight)
+                }
                 Text(headerSubtitle)
                     .font(.system(size: 11))
                     .foregroundStyle(.secondary)
@@ -56,7 +58,7 @@ struct ContentView: View {
                     ? "exclamationmark.circle"
                     : "checkmark.circle")
                     .font(.system(size: 11))
-                    .foregroundStyle(banner.kind == .warning ? .orange : .secondary)
+                    .foregroundStyle(banner.kind == .warning ? Theme.warning : Theme.highlight)
                     .labelStyle(.titleAndIcon)
                     .transition(.opacity)
             }
@@ -106,22 +108,21 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
             ScrollView {
-                LazyVStack(spacing: 0) {
+                LazyVStack(spacing: 6) {
                     ForEach(model.items) { item in
                         FileRow(item: item)
-                        Divider()
-                            .opacity(0.4)
-                            .padding(.leading, 56)
                     }
                 }
+                .padding(.horizontal, 14)
+                .padding(.top, 4)
                 // Место под талисмана в правом нижнем углу: без запаса он
                 // накрывал бы последнюю строку списка.
-                Color.clear.frame(height: 96)
+                Color.clear.frame(height: 180)
             }
             .scrollContentBackground(.hidden)
             .overlay(alignment: .bottomTrailing) {
-                AgaveMascot(mood: mascotMood, size: 150)
-                    .padding(.trailing, 28)
+                AgaveMascot(mood: mascotMood, size: 230)
+                    .padding(.trailing, 24)
                     .transition(.scale(scale: 0.5, anchor: .bottom).combined(with: .opacity))
                     // Талисман — украшение: он не должен перехватывать нажатия
                     // по строкам списка под ним.
@@ -144,14 +145,27 @@ struct EmptyStateView: View {
     var isTargeted = false
 
     var body: some View {
-        VStack(spacing: 10) {
-            AgaveMascot(mood: isTargeted ? .excited : .idle, size: 150)
+        GeometryReader { geometry in
+            content(mascotSize: Self.mascotSize(for: geometry.size))
+                .frame(width: geometry.size.width, height: geometry.size.height)
+        }
+    }
+
+    /// Агава занимает всё свободное место по высоте, но не больше 300 точек:
+    /// в маленьком окне она уменьшается, а не выталкивает панели за край.
+    static func mascotSize(for space: CGSize) -> CGFloat {
+        min(300, max(80, min(space.height - 130, space.width - 64)))
+    }
+
+    private func content(mascotSize: CGFloat) -> some View {
+        VStack(spacing: 12) {
+            AgaveMascot(mood: isTargeted ? .excited : .idle, size: mascotSize)
 
             VStack(spacing: 4) {
                 Text(isTargeted
                      ? "Отпускайте — разберу"
                      : "Перетащите сюда файлы или папку")
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.system(size: 15, weight: .semibold))
                     .contentTransition(.opacity)
                 Text("MP3, M4A, OGG, WAV, AIFF, FLAC, ALAC и всё, что читает система")
                     .font(.system(size: 11))
@@ -165,6 +179,6 @@ struct EmptyStateView: View {
             .controlSize(.regular)
             .padding(.top, 4)
         }
-        .padding(32)
+        .padding(.horizontal, 32)
     }
 }

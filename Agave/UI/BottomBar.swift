@@ -11,7 +11,7 @@ struct BottomBar: View {
             if model.isRunning {
                 ProgressView(value: model.progress)
                     .progressViewStyle(.linear)
-                    .tint(Theme.accent)
+                    .tint(Theme.highlight)
                     .frame(height: 2)
                     .clipShape(Rectangle())
             }
@@ -24,6 +24,7 @@ struct BottomBar: View {
             .padding(.top, 12)
             .padding(.bottom, 14)
         }
+        .background(Theme.backgroundDeep.opacity(0.82))
     }
 
     // MARK: - Папка экспорта
@@ -32,7 +33,7 @@ struct BottomBar: View {
         HStack(spacing: 10) {
             Image(systemName: model.exportFolder.url == nil ? "folder.badge.questionmark" : "folder.fill")
                 .font(.system(size: 13))
-                .foregroundStyle(model.exportFolder.url == nil ? .orange : Color.secondary)
+                .foregroundStyle(model.exportFolder.url == nil ? Theme.warning : Theme.highlight)
                 .frame(width: 18)
 
             VStack(alignment: .leading, spacing: 1) {
@@ -67,7 +68,7 @@ struct BottomBar: View {
         .padding(.vertical, 8)
         .background(
             RoundedRectangle(cornerRadius: 9, style: .continuous)
-                .fill(Color.primary.opacity(0.05))
+                .fill(Theme.panel)
         )
     }
 
@@ -93,6 +94,7 @@ struct BottomBar: View {
             } label: {
                 Image(systemName: "slider.horizontal.3")
             }
+            .accessibilityLabel("Настройки")
             .help("Дополнительные настройки")
             .popover(isPresented: $showSettings, arrowEdge: .bottom) {
                 SettingsPopover()
@@ -118,6 +120,7 @@ struct BottomBar: View {
                     .frame(minWidth: 112)
             }
             .buttonStyle(.borderedProminent)
+            .tint(Theme.accent)
             .controlSize(.large)
             .keyboardShortcut(.return, modifiers: .command)
             .disabled(!model.isRunning && !model.canStart)

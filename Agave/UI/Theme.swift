@@ -1,42 +1,48 @@
 import AppKit
 import SwiftUI
 
-/// Общие константы оформления.
+/// Общие константы оформления. Окно тёмное: тропический лес в тени полога,
+/// на нём яркая агава и коралловые акценты. Синяя ночная родня — Agave Video.
 enum Theme {
     static let cornerRadius: CGFloat = 12
-    static let rowHeight: CGFloat = 54
+    static let rowHeight: CGFloat = 58
     /// Отступ слева под кнопки светофора в окне без заголовка.
     static let trafficLightInset: CGFloat = 78
 
-    static let accent = Color.accentColor
+    /// Коралл, притемнённый под кнопку: белый текст читается с контрастом около 5:1.
+    static let accent = Color(red: 0.784, green: 0.271, blue: 0.110)
+    /// Тёплый оттенок для предупреждений на тёмном фоне.
+    static let warning = Color(red: 1.0, green: 0.478, blue: 0.239)
+    /// Лаймовая подсветка: готовые файлы, прогресс, название в шапке.
+    static let highlight = Color(red: 0.706, green: 0.898, blue: 0.333)
+    /// Лучи сквозь полог.
+    static let sun = Color(red: 1.0, green: 0.824, blue: 0.247)
 
-    // Палитра талисмана. Листья сизо-зелёные, как у живой агавы, горшок —
-    // акцентная терракота: вместе выходит домашний цветок на подоконнике.
-    static let plantLight = Color(red: 0.612, green: 0.741, blue: 0.663)
-    static let plant = Color(red: 0.443, green: 0.596, blue: 0.518)
-    static let plantOutline = Color(red: 0.290, green: 0.427, blue: 0.365)
+    // Лес: от света под пологом к глубокой тени у земли.
+    static let backgroundTop = Color(red: 0.118, green: 0.400, blue: 0.275)
+    static let background = Color(red: 0.071, green: 0.271, blue: 0.196)
+    static let backgroundDeep = Color(red: 0.035, green: 0.165, blue: 0.122)
 
-    static let pot = Color(red: 0.804, green: 0.451, blue: 0.290)
-    static let potDeep = Color(red: 0.678, green: 0.337, blue: 0.204)
-    static let potRim = Color(red: 0.847, green: 0.514, blue: 0.353)
-    static let face = Color(red: 0.267, green: 0.153, blue: 0.106)
-}
+    // Листья по краям окна.
+    static let leafDeep = Color(red: 0.035, green: 0.165, blue: 0.122)
+    static let leaf = Color(red: 0.169, green: 0.522, blue: 0.333)
+    static let leafLight = Color(red: 0.239, green: 0.651, blue: 0.392)
 
-/// Подложка окна с системным размытием.
-struct VisualEffectBackground: NSViewRepresentable {
-    var material: NSVisualEffectView.Material = .underWindowBackground
+    /// Подложки строк и панелей поверх фона.
+    static let panel = Color.white.opacity(0.07)
+    static let panelStrong = Color.white.opacity(0.11)
 
-    func makeNSView(context: Context) -> NSVisualEffectView {
-        let view = NSVisualEffectView()
-        view.material = material
-        view.blendingMode = .behindWindow
-        view.state = .active
-        return view
-    }
+    // Талисман: сочная тропическая агава в коралловом горшке.
+    static let plantLight = Color(red: 0.561, green: 0.843, blue: 0.478)
+    static let plant = Color(red: 0.243, green: 0.620, blue: 0.353)
+    static let plantOutline = Color(red: 0.090, green: 0.302, blue: 0.180)
+    /// Светлые кончики листьев на иконке.
+    static let leafTip = Color(red: 0.706, green: 0.898, blue: 0.333)
 
-    func updateNSView(_ view: NSVisualEffectView, context: Context) {
-        view.material = material
-    }
+    static let pot = Color(red: 0.941, green: 0.478, blue: 0.227)
+    static let potDeep = Color(red: 0.784, green: 0.271, blue: 0.110)
+    static let potRim = Color(red: 1.0, green: 0.604, blue: 0.353)
+    static let face = Color(red: 0.227, green: 0.102, blue: 0.047)
 }
 
 /// Позволяет таскать окно за фон и убирает полосу заголовка.
@@ -56,10 +62,9 @@ struct WindowConfigurator: NSViewRepresentable {
         window.isMovableByWindowBackground = true
         window.titlebarAppearsTransparent = true
         window.titleVisibility = .hidden
-        // Оформление всегда светлое: приложение задумано как светлое стеклянное,
-        // и акцент подобран под светлый фон.
-        window.appearance = NSAppearance(named: .aqua)
-        NSApp.appearance = NSAppearance(named: .aqua)
+        // Оформление всегда тёмное: элементы управления должны читаться на тёмном фоне.
+        window.appearance = NSAppearance(named: .darkAqua)
+        NSApp.appearance = NSAppearance(named: .darkAqua)
     }
 }
 
